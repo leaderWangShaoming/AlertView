@@ -30,7 +30,7 @@
 }
 
 - (void)initTable {
-    listArray = @[@"文字",@"图片",@"图文",@"文字头，文字内容",@"头，内容总方法",@"头部，按钮",@"文字提示，内容，按钮",@"终极方法"];
+    listArray = @[@"文字",@"图片",@"图文",@"文字头，文字内容",@"头，内容总方法",@"头部，按钮",@"文字提示，内容，按钮",@"终极方法",@"showHint"];
     
     mainTable = [[UITableView alloc] initWithFrame:CGRectZero style:UITableViewStylePlain];
     mainTable.delegate = self;
@@ -180,7 +180,6 @@
                                                                   [alert dismiss];
                                                               }];
             alert.coverColor = [UIColor colorWithWhite:.7 alpha:.3];
-
             alert.headView.MaxImageHeight = 30;
             
             alert.contentView.textAlignment = NSTextAlignmentLeft;
@@ -193,6 +192,11 @@
             [alert show:AlertViewAnimationLeft];
             
             NSLog(@"%@",alert);
+        }
+            break;
+        case 8:
+        {
+            [AlertHeadView showHint:@"提示信息" offSet:70];
         }
             break;
         default:

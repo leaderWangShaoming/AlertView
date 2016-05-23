@@ -47,7 +47,10 @@ typedef NS_ENUM(NSInteger,AlertHeadGraphicType) {
 @property (nonatomic, assign) CGFloat MaxImageHeight;
 
 
-
+/**
+ * 显示的最大宽度,默认为0，此时宽为父视图的宽
+ */
+@property (nonatomic, assign) CGFloat MaxSelfWidth;
 
 /**
  * 工厂方法
@@ -65,4 +68,7 @@ typedef NS_ENUM(NSInteger,AlertHeadGraphicType) {
 //布局
 - (void)updateHeadLayout;
 
+
++ (void)showHint:(NSString *)str;
++ (void)showHint:(NSString *)str offSet:(CGFloat)offset;
 @end

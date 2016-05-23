@@ -22,6 +22,7 @@ static const CGFloat bottomMargin = 5;
 
 @interface AlertHeadView ()
 {
+    
     UILabel *alertTitle;
     UIImageView *alertImage;
     
@@ -30,6 +31,8 @@ static const CGFloat bottomMargin = 5;
     CGFloat imageWidth;
     CGFloat titlWidth;
 }
+//提示框是否已经显示
+@property (nonatomic, assign) BOOL hasShow;
 
 /**
  * AlertHeadView样式
@@ -45,6 +48,73 @@ static const CGFloat bottomMargin = 5;
 @end
 
 @implementation AlertHeadView
+
+#pragma mark - 提示信息
++ (instancetype)shareHint {
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        hintView = [[AlertHeadView alloc] initHint];
+    });
+    return hintView;
+}
+
+- (instancetype)initHint {
+    self = [[AlertHeadView alloc] initWithType:AlertHeadTypeCustom title:@"" image:nil];
+    alertTitle.backgroundColor = [UIColor clearColor];
+    alertTitle.font = [UIFont systemFontOfSize:14];
+    self.layer.cornerRadius = 5;
+    self.layer.masksToBounds = YES;
+    self.backgroundColor = [UIColor colorWithWhite:.5 alpha:.8];
+    return self;
+}
++ (void)showHint:(NSString *)str {
+    [AlertHeadView showHint:str offSet:0];
+}
+
++ (void)showHint:(NSString *)str offSet:(CGFloat)offsetY{
+    UIWindow *window = [UIApplication sharedApplication].keyWindow;
+
+    AlertHeadView *hint = [AlertHeadView shareHint];
+    hint.title = str;
+    hint.MaxSelfWidth = SCREEN_WIDTH - 40;
+    
+    
+    [window addSubview:hint];
+    [hint updateHeadLayout];
+    [hint titleWidth];
+    hint.sd_layout
+    .centerXIs(window.center.x)
+    .centerYIs(window.center.y - offsetY)
+    .widthIs(hint.MaxSelfWidth)
+    .heightIs([hint titleHeight]);
+    [hint updateHeadLayout];
+    
+    //判断添加的偏移量是否使view超出屏幕
+    if (hint.frame.origin.y <= 0) {
+        offsetY = (SCREEN_HEIGHT - hint.frame.size.height)/2;
+        hint.sd_layout
+        .centerYIs(window.center.y - offsetY);
+        [hint updateLayout];
+    }
+    
+    if (hint.frame.origin.y >= (SCREEN_HEIGHT - hint.frame.size.height)) {
+        offsetY = -(SCREEN_HEIGHT - hint.frame.size.height)/2;
+        hint.sd_layout
+        .centerYIs(window.center.y - offsetY);
+        [hint updateLayout];
+    }
+    
+    if (!hint.hasShow) {
+        hint.hasShow = YES;
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(2 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+            [hint removeFromSuperview];
+            hint.hasShow = NO;
+        });
+    }
+
+
+}
+
 
 #pragma mark - 工厂方法
 - (instancetype)initWithType:(AlertHeadType)type
@@ -71,7 +141,7 @@ static const CGFloat bottomMargin = 5;
 
 - (void)initTitle:(NSString *)title image:(UIImage *)image {
     _MaxImageHeight = 50.f;
-    
+    _MaxSelfWidth = 0;
     self.image = image;
     self.title = title;
     self.backgroundColor = [UIColor whiteColor];
@@ -172,6 +242,12 @@ static const CGFloat bottomMargin = 5;
     }
     [self updateLayout];
     
+    if (self.MaxSelfWidth == 0) {
+        if (self.superview) {
+            _MaxSelfWidth = self.superview.frame.size.width;
+        }
+    }
+    
     if (!alertTitle && !alertImage) {
         return;
     }
@@ -215,12 +291,11 @@ static const CGFloat bottomMargin = 5;
     [self updateLayout];
     
     //
-    if (self.superview) {
+    if (self.superview && ![self.superview isEqual:[UIApplication sharedApplication].keyWindow]) {
         //可能添加到父视图上时，superview已经含有子视图
         self.superview.sd_layout.heightIs(self.frame.size.height + self.superview.frame.size.height);
         [self.superview updateLayout];
     }
-    
 }
 
 
@@ -311,36 +386,60 @@ static const CGFloat bottomMargin = 5;
         {
             self.textAlignment = NSTextAlignmentLeft;
             //图片文字距离两边间隔
-            CGFloat space = (self.frame.size.width - [self titleHeight] - imageWidth - lineSpace)/2;
+            CGFloat space = (self.frame.size.width - [self titleWidth] - imageWidth - lineSpace)/2;
             
-            alertImage.sd_layout
-            .topSpaceToView(self,lineSpace)
-            .leftSpaceToView(self,space)
-            .heightIs(_MaxImageHeight)
-            .widthIs(imageWidth);
+            //判断高度，使用不同约束，否则可能父视图无法确定自身frame
+            if (_MaxImageHeight > [self titleHeight]) {
+                alertImage.sd_layout
+                .topSpaceToView(self,lineSpace)
+                .leftSpaceToView(self,space)
+                .heightIs(_MaxImageHeight)
+                .widthIs(imageWidth);
+                
+            } else {
+                alertImage.sd_layout
+                .leftSpaceToView(self,space)
+                .centerYEqualToView(self)
+                .heightIs(_MaxImageHeight)
+                .widthIs(imageWidth);
+            }
             
             alertTitle.sd_layout
+            .topSpaceToView(self,lineSpace)
             .leftSpaceToView(alertImage,lineSpace)
             .centerYEqualToView(self)
-            .heightIs(self.font.lineHeight);
+            .widthIs([self titleWidth])
+            .heightIs([self titleHeight]);
         }
             break;
         case AlertHeadGraphicCenterRight:
         {
             self.textAlignment = NSTextAlignmentRight;
             //图片文字距离两边间隔
-            CGFloat space = (self.frame.size.width - [self titleHeight] - imageWidth - lineSpace)/2;
+            CGFloat space = (self.frame.size.width - [self titleWidth] - imageWidth - lineSpace)/2;
             
-            alertImage.sd_layout
-            .topSpaceToView(self,lineSpace)
-            .rightSpaceToView(self,space)
-            .heightIs(_MaxImageHeight)
-            .widthIs(imageWidth);
+            if (_MaxImageHeight > [self titleHeight]) {
+                alertImage.sd_layout
+                .topSpaceToView(self,lineSpace)
+                .rightSpaceToView(self,space)
+                .heightIs(_MaxImageHeight)
+                .widthIs(imageWidth);
+                
+            } else {
+                alertImage.sd_layout
+                .rightSpaceToView(self,space)
+                .centerYEqualToView(self)
+                .heightIs(_MaxImageHeight)
+                .widthIs(imageWidth);
+            }
+
             
             alertTitle.sd_layout
+            .topSpaceToView(self,lineSpace)
             .rightSpaceToView(alertImage,lineSpace)
             .centerYEqualToView(self)
-            .heightIs(self.font.lineHeight);
+            .widthIs([self titleWidth])
+            .heightIs([self titleHeight]);
         }
             break;
         default:
@@ -397,7 +496,7 @@ static const CGFloat bottomMargin = 5;
 }
 
 
-#pragma mark - 提示label高度(图文居中时，返回文字宽)
+#pragma mark - 提示label高度
 - (CGFloat)titleHeight {
     if (_headType == AlertHeadTypeCustom) {
         return MAX(self.font.lineHeight + 8,[self.title stringSizeWithFont:self.font Size:CGSizeMake(self.superview.frame.size.width - 2 * lineSpace, MAXFLOAT)].height);
@@ -418,13 +517,20 @@ static const CGFloat bottomMargin = 5;
             case AlertHeadGraphicCenterLeft:
             case AlertHeadGraphicCenterRight:
             {
-                return [self.title stringSizeWithFont:self.font Size:CGSizeMake(MAXFLOAT, self.font.lineHeight)].width;
+                return MAX(self.font.lineHeight + 8,[self.title stringSizeWithFont:self.font Size:CGSizeMake([self titleWidth], MAXFLOAT)].height);
             }
                 break;
             default:
                 break;
         }
     }
+}
+
+- (CGFloat)titleWidth {
+    CGFloat width = [self.title stringSizeWithFont:self.font Size:CGSizeMake(MAXFLOAT, self.font.lineHeight)].width;
+    width = MIN(_MaxSelfWidth - imageWidth - 2*lineSpace, width);
+    _MaxSelfWidth = width + imageWidth + 2 * lineSpace;
+    return width;
 }
 
 @end
