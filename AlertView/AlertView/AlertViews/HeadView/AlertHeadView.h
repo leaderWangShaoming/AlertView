@@ -70,5 +70,5 @@ typedef NS_ENUM(NSInteger,AlertHeadGraphicType) {
 
 
 + (void)showHint:(NSString *)str;
-+ (void)showHint:(NSString *)str offSet:(CGFloat)offset;
++ (void)showHint:(NSString *)str offSetY:(CGFloat)offsetY;
 @end

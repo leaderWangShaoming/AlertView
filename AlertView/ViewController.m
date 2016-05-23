@@ -196,7 +196,7 @@
             break;
         case 8:
         {
-            [AlertHeadView showHint:@"提示信息" offSet:70];
+            [AlertViewShow showHint:@"提示"];
         }
             break;
         default:

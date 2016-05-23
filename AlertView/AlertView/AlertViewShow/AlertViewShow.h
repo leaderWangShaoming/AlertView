@@ -86,6 +86,12 @@
                 buttonsArray:(NSArray *)buttons
                     tapBlock:(TapIndex)block;
 
+/**
+ * 提示框信息
+ */
++ (void)showHint:(NSString *)str;
++ (void)showHint:(NSString *)str offSetY:(CGFloat)offsetY;
+
 
 /**
  * 动画方法

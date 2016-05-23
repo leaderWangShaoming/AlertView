@@ -68,10 +68,10 @@ static const CGFloat bottomMargin = 5;
     return self;
 }
 + (void)showHint:(NSString *)str {
-    [AlertHeadView showHint:str offSet:0];
+    [AlertHeadView showHint:str offSetY:0];
 }
 
-+ (void)showHint:(NSString *)str offSet:(CGFloat)offsetY{
++ (void)showHint:(NSString *)str offSetY:(CGFloat)offsetY{
     UIWindow *window = [UIApplication sharedApplication].keyWindow;
 
     AlertHeadView *hint = [AlertHeadView shareHint];
@@ -111,7 +111,6 @@ static const CGFloat bottomMargin = 5;
             hint.hasShow = NO;
         });
     }
-
 
 }
 

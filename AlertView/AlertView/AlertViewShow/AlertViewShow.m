@@ -39,6 +39,14 @@ typedef NS_ENUM(NSInteger,AlertShowType) {
 @end
 
 @implementation AlertViewShow
+#pragma mark -提示框
++ (void)showHint:(NSString *)str {
+    [AlertHeadView showHint:str];
+}
+
++ (void)showHint:(NSString *)str offSetY:(CGFloat)offsetY {
+    [AlertHeadView showHint:str offSetY:offsetY];
+}
 
 #pragma mark - 工厂方法
 - (instancetype)initWithType:(AlertHeadType)type
