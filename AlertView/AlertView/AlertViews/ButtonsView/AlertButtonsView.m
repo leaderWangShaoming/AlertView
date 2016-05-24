@@ -101,7 +101,6 @@ static const CGFloat height = 40;//button高
         }
     }];
     UILabel *label = [UILabel new];
-    label.backgroundColor = [UIColor whiteColor];
     label.textAlignment = NSTextAlignmentCenter;
     label.textColor = [UIColor grayColor];
     label.font = [UIFont systemFontOfSize:14];
@@ -110,6 +109,8 @@ static const CGFloat height = 40;//button高
     label.text = _buttonsArray[indexPath.row];
     label.sd_layout.spaceToSuperView(UIEdgeInsetsZero);
     
+    cell.backgroundColor = [UIColor whiteColor];
+
 //    cell.layer.borderWidth = 1;
 //    cell.layer.borderColor = [UIColor lightGrayColor].CGColor;
     
@@ -154,6 +155,22 @@ static const CGFloat height = 40;//button高
     UICollectionReusableView *headView = [collectionView dequeueReusableSupplementaryViewOfKind:kind withReuseIdentifier:@"Identifierhead" forIndexPath:indexPath];
     headView.backgroundColor = [UIColor whiteColor];
     return headView;
+}
+
+
+//是否应该高亮
+- (BOOL)collectionView:(UICollectionView *)collectionView shouldHighlightItemAtIndexPath:(NSIndexPath *)indexPath {
+    return YES;
+}
+
+- (void)collectionView:(UICollectionView *)collectionView didHighlightItemAtIndexPath:(NSIndexPath *)indexPath {
+    UICollectionViewCell *cell = [collectionView cellForItemAtIndexPath:indexPath];
+    cell.backgroundColor = [UIColor groupTableViewBackgroundColor];
+}
+
+- (void)collectionView:(UICollectionView *)collectionView didUnhighlightItemAtIndexPath:(NSIndexPath *)indexPath {
+    UICollectionViewCell *cell = [collectionView cellForItemAtIndexPath:indexPath];
+    cell.backgroundColor = [UIColor whiteColor];
 }
 
 #pragma mark - 判断一个数在布局样式数组中的第几行
