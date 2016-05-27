@@ -179,19 +179,22 @@
                                                                   NSLog(@"点击了第%ld个",index + 1);
                                                                   [alert dismiss];
                                                               }];
+            //设置背景的一些属性
             alert.coverColor = [UIColor colorWithWhite:.7 alpha:.3];
+            alert.lineHeight = 1;
+            alert.lineColor = [UIColor greenColor];
+            alert.tapCoverDismiss = NO;
+
+            //title
             alert.headView.MaxImageHeight = 30;
-            
+            //content
             alert.contentView.textAlignment = NSTextAlignmentLeft;
             alert.contentView.font = [UIFont systemFontOfSize:13];
             alert.contentView.titleColor = [UIColor grayColor];
             alert.contentView.MaxImageHeight = 900;
-            
-            alert.lineHeight = 1;
-            alert.lineColor = [UIColor greenColor];
-            
+            //buttons
             alert.buttonsView.titleColor = [UIColor greenColor];
-            alert.tapCoverDismiss = NO;
+            
             [alert show:AlertViewAnimationLeft completion:^{
                 //若想替换某个button，在此处写代码
                 UIButton *button = [UIButton new];
@@ -201,6 +204,7 @@
                 [alert.buttonsView changeButtonAtIndex:0 withDIYButton:button];
                 
             }];
+            
             NSLog(@"%@",alert);
         }
             break;
