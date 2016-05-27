@@ -280,10 +280,13 @@ typedef NS_ENUM(NSInteger,AlertShowType) {
 #pragma mark - 懒加载
 - (UIView *)cover {
     if (!_cover) {
+        
+        _tapCoverDismiss = YES;
+        
         _cover = [UIView new];
         _cover.backgroundColor = RGBACOLOR(.8, .8, .8, .8);
         [_cover tapHandle:^{
-            [self dismiss];
+            [self tapCover];
         }];
     }
     return _cover;
@@ -298,16 +301,24 @@ typedef NS_ENUM(NSInteger,AlertShowType) {
 
 
 #pragma mark - 动画
+- (void)show:(AlertViewAnimationType)type completion:(void(^)())completion {
+    [self show:type offsetY:0 completion:completion];
+}
+
+- (void)show:(AlertViewAnimationType)type offsetY:(CGFloat)offsetY {
+    [self show:type offsetY:offsetY completion:nil];
+}
+
 - (void)show:(AlertViewAnimationType)type {
     [self show:type offsetY:0];
 }
 
-- (void)show:(AlertViewAnimationType)type offsetY:(CGFloat)offsetY {
+- (void)show:(AlertViewAnimationType)type offsetY:(CGFloat)offsetY completion:(void(^)())completion{
     _offsetY = offsetY;
     [self layoutSubViews];
-    [AlertViewAnimation animationWith:type mainView:self.showView cover:self.cover];
-}
 
+    [AlertViewAnimation animationWith:type mainView:self.showView cover:self.cover completion:completion];
+}
 
 - (void)dismiss {
     [UIView animateWithDuration:.3 animations:^{
@@ -319,4 +330,12 @@ typedef NS_ENUM(NSInteger,AlertShowType) {
         [self.cover removeFromSuperview];
     }];
 }
+
+#pragma mark - 点击背景
+- (void)tapCover {
+    if (_tapCoverDismiss) {
+        [self dismiss];
+    }
+}
+
 @end

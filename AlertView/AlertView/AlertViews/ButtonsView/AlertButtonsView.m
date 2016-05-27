@@ -39,11 +39,19 @@ static const CGFloat height = 40;//button高
         self.buttonsArray = [NSMutableArray arrayWithArray:buttonArr];
         tapBlcok = block;
         _buttonHeight = height;
+        [self initData];
         [self dealWithData];
     }
     return self;
 }
 
+
+#pragma mark - 默认数据
+- (void)initData {
+    _buttongroundColor = [UIColor whiteColor];
+    _titleFont = [UIFont systemFontOfSize:14];
+    _titleColor = [UIColor grayColor];
+}
 
 #pragma mark - 懒加载
 - (void)setButtonsLayout:(NSMutableArray *)buttonsLayout {
@@ -52,6 +60,26 @@ static const CGFloat height = 40;//button高
 - (void)setButtonsArray:(NSMutableArray *)buttonsArray {
     _buttonsArray = buttonsArray;
 }
+
+
+#pragma mark - 属性设置
+- (void)setButtonHeight:(CGFloat)buttonHeight {
+    _buttonHeight = buttonHeight;
+}
+
+- (void)setButtongroundColor:(UIColor *)buttongroundColor {
+    _buttongroundColor = buttongroundColor;
+}
+
+- (void)setTitleFont:(UIFont *)titleFont {
+    _titleFont = titleFont;
+}
+
+- (void)setTitleColor:(UIColor *)titleColor {
+    _titleColor = titleColor;
+}
+
+
 
 
 #pragma mark - 处理按钮避免，编辑时使用出错
@@ -102,18 +130,17 @@ static const CGFloat height = 40;//button高
     }];
     UILabel *label = [UILabel new];
     label.textAlignment = NSTextAlignmentCenter;
-    label.textColor = [UIColor grayColor];
-    label.font = [UIFont systemFontOfSize:14];
+
     label.numberOfLines = 0;
     [cell addSubview:label];
+
+    label.textColor = _titleColor;
+    label.font = _titleFont;
+    label.backgroundColor = _buttongroundColor;
+    
     label.text = _buttonsArray[indexPath.row];
     label.sd_layout.spaceToSuperView(UIEdgeInsetsZero);
-    
-    cell.backgroundColor = [UIColor whiteColor];
 
-//    cell.layer.borderWidth = 1;
-//    cell.layer.borderColor = [UIColor lightGrayColor].CGColor;
-    
     
     return cell;
 }
@@ -193,6 +220,20 @@ static const CGFloat height = 40;//button高
     if (self.superview) {
         self.superview.sd_layout.heightIs(selfH + self.superview.frame.size.height);
         [self.superview updateLayout];
+    }
+}
+
+
+#pragma mark - 替换button方法
+- (void)changeButtonAtIndex:(NSInteger)index withDIYButton:(UIView *)button {
+    NSIndexPath *indexPath = [NSIndexPath indexPathForRow:index inSection:0];
+    UICollectionViewCell *cell = [self cellForItemAtIndexPath:indexPath];
+    for (UILabel *label in cell.subviews) {
+        if ([label isKindOfClass:[UILabel class]]) {
+            button.frame = label.frame;
+            [label removeFromSuperview];
+            [cell addSubview:button];
+        }
     }
 }
 

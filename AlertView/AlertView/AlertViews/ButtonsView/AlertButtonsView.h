@@ -25,17 +25,41 @@ typedef void(^TapIndex)(NSInteger index);
  */
 @property (nonatomic, strong) NSMutableArray *buttonsArray;
 
-//按钮高度
+/**
+ * 按钮高度
+ */
 @property (nonatomic, assign) CGFloat buttonHeight;
 
-//按钮属性
-@property (nonatomic, strong) UIColor *buttonColor;
-@property (nonatomic, strong) UIFont *buttonFont;
-@property (nonatomic, strong) UIFont *bottonBorderWith;
+/**
+ * button统一背景颜色
+ */
+@property (nonatomic, strong) UIColor *buttongroundColor;
 
+/**
+ * button字体大小
+ */
+@property (nonatomic, strong) UIFont *titleFont;
+
+/**
+ * button字体颜色
+ */
+@property (nonatomic, strong) UIColor *titleColor;
+
+
+/**
+ * 用自己定义button替换，默认button
+ */
+- (void)changeButtonAtIndex:(NSInteger)index withDIYButton:(UIView *)button;
+
+
+
+/**
+ * 更新约束
+ */
 - (void)updateButtonsLayout;
 
 - (instancetype)initWithTypeArray:(NSArray *)typeArr
                      buttonsArray:(NSArray *)buttonArr
                          tapBlock:(TapIndex)block;
+
 @end

@@ -25,4 +25,9 @@ typedef NS_ENUM(NSInteger,AlertViewAnimationType) {
              mainView:(UIView *)main
                 cover:(UIView *)cover;
 
++ (void)animationWith:(AlertViewAnimationType)type
+             mainView:(UIView *)main
+                cover:(UIView *)cover
+           completion:(void(^)())completion;
+
 @end

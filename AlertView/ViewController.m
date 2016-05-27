@@ -189,8 +189,18 @@
             
             alert.lineHeight = 1;
             alert.lineColor = [UIColor greenColor];
-            [alert show:AlertViewAnimationLeft];
             
+            alert.buttonsView.titleColor = [UIColor greenColor];
+            alert.tapCoverDismiss = NO;
+            [alert show:AlertViewAnimationLeft completion:^{
+                //若想替换某个button，在此处写代码
+                UIButton *button = [UIButton new];
+                [button setBackgroundColor:[UIColor redColor]];
+                button.titleLabel.font = [UIFont systemFontOfSize:14];
+                [button setTitle:@"我是来替换的" forState:0];
+                [alert.buttonsView changeButtonAtIndex:0 withDIYButton:button];
+                
+            }];
             NSLog(@"%@",alert);
         }
             break;

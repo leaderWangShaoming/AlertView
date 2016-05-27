@@ -12,6 +12,7 @@
 {
     UIView *mainView;
     UIView *coverView;
+    void(^completionBlock)();
 }
 
 @end
@@ -21,14 +22,26 @@
 + (void)animationWith:(AlertViewAnimationType)type
              mainView:(UIView *)main
                 cover:(UIView *)cover {
-    [[[AlertViewAnimation alloc] init] animationWith:type mainView:main cover:cover];
+    [[[AlertViewAnimation alloc] init] animationWith:type mainView:main cover:cover completion:nil];
 }
+
+
++ (void)animationWith:(AlertViewAnimationType)type
+             mainView:(UIView *)main
+                cover:(UIView *)cover
+           completion:(void(^)())completion {
+    [[[AlertViewAnimation alloc] init] animationWith:type mainView:main cover:cover completion:completion];
+}
+
+
 
 - (void)animationWith:(AlertViewAnimationType)type
              mainView:(UIView *)main
-                cover:(UIView *)cover {
+                cover:(UIView *)cover
+           completion:(void(^)())completion {
     mainView = main;
     coverView = cover;
+    completionBlock = completion;
     switch (type) {
         case AlertViewAnimationIncrease:
         {
@@ -67,6 +80,10 @@
         mainView.alpha = 1;
         mainView.transform = CGAffineTransformIdentity;
         coverView.alpha = 1;
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [self endAnimation];
+        });
+    } completion:^(BOOL finished) {
     }];
 }
 
@@ -80,6 +97,11 @@
         mainView.alpha = 1;
         mainView.transform = CGAffineTransformIdentity;
         coverView.alpha = 1;
+        
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [self endAnimation];
+        });
+    } completion:^(BOOL finished) {
     }];
 }
 
@@ -94,6 +116,9 @@
     [UIView animateWithDuration:.05 animations:^{
         coverView.alpha = 1;
     } completion:^(BOOL finished) {
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [self endAnimation];
+        });
         [UIView animateWithDuration:.3
                               delay:.1
              usingSpringWithDamping:.5 //震动幅度(0-1),数值越小震动越明显
@@ -105,7 +130,6 @@
                              mainView.frame = frame;
                              
                          } completion:^(BOOL finished) {
-                             
                          }];
     }];
 }
@@ -121,6 +145,9 @@
     [UIView animateWithDuration:.05 animations:^{
         coverView.alpha = 1;
     } completion:^(BOOL finished) {
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [self endAnimation];
+        });
         [UIView animateWithDuration:.3
                               delay:.2
              usingSpringWithDamping:.5
@@ -132,10 +159,15 @@
                              mainView.frame = frame;
                              
                          } completion:^(BOOL finished) {
-                             
                          }];
     }];
 }
 
 
+#pragma mark - 动画结束执行
+- (void)endAnimation {
+    if (completionBlock) {
+        completionBlock();
+    }
+}
 @end

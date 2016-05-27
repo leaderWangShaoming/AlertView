@@ -31,7 +31,10 @@
  * 背景颜色
  */
 @property (nonatomic, strong) UIColor *coverColor;
-
+/**
+ * 背景是否支持点击消失,默认为YES
+ */
+@property (nonatomic, assign) BOOL tapCoverDismiss;
 
 /**
  * 单独显示一个图文信息
@@ -98,6 +101,7 @@
  */
 - (void)show:(AlertViewAnimationType)type;
 - (void)show:(AlertViewAnimationType)type offsetY:(CGFloat)offsetY;
+- (void)show:(AlertViewAnimationType)type completion:(void(^)())completion;
 
 - (void)dismiss;
 @end
