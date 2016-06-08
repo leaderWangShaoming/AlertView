@@ -113,25 +113,24 @@
     frame.origin.x -= ((SCREEN_WIDTH - frame.size.width)/2 + frame.size.width);
     mainView.frame = frame;
     
-    [UIView animateWithDuration:.05 animations:^{
-        coverView.alpha = 1;
-    } completion:^(BOOL finished) {
-        dispatch_async(dispatch_get_main_queue(), ^{
-            [self endAnimation];
-        });
-        [UIView animateWithDuration:.3
-                              delay:.1
-             usingSpringWithDamping:.5 //震动幅度(0-1),数值越小震动越明显
-              initialSpringVelocity:1/.5 //表示初始的速度，数值越大一开始移动越快
-                            options:UIViewAnimationOptionOverrideInheritedCurve
-                         animations:^{
-                             CGRect frame = mainView.frame;
-                             frame.origin.x += ((SCREEN_WIDTH - frame.size.width)/2 + frame.size.width);
-                             mainView.frame = frame;
-                             
-                         } completion:^(BOOL finished) {
-                         }];
-    }];
+    
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [self endAnimation];
+    });
+    [UIView animateWithDuration:.3
+                          delay:.1
+         usingSpringWithDamping:.5 //震动幅度(0-1),数值越小震动越明显
+          initialSpringVelocity:1/.5 //表示初始的速度，数值越大一开始移动越快
+                        options:UIViewAnimationOptionOverrideInheritedCurve
+                     animations:^{
+                         coverView.alpha = 1;
+                         
+                         CGRect frame = mainView.frame;
+                         frame.origin.x += ((SCREEN_WIDTH - frame.size.width)/2 + frame.size.width);
+                         mainView.frame = frame;
+                         
+                     } completion:^(BOOL finished) {
+                     }];
 }
 
 
@@ -142,25 +141,24 @@
     frame.origin.x += ((SCREEN_WIDTH - frame.size.width)/2 + frame.size.width);
     mainView.frame = frame;
     
-    [UIView animateWithDuration:.05 animations:^{
-        coverView.alpha = 1;
-    } completion:^(BOOL finished) {
-        dispatch_async(dispatch_get_main_queue(), ^{
-            [self endAnimation];
-        });
-        [UIView animateWithDuration:.3
-                              delay:.2
-             usingSpringWithDamping:.5
-              initialSpringVelocity:1/.5
-                            options:UIViewAnimationOptionOverrideInheritedCurve
-                         animations:^{
-                             CGRect frame = mainView.frame;
-                             frame.origin.x -= ((SCREEN_WIDTH - frame.size.width)/2 + frame.size.width);
-                             mainView.frame = frame;
-                             
-                         } completion:^(BOOL finished) {
-                         }];
-    }];
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [self endAnimation];
+    });
+    [UIView animateWithDuration:.3
+                          delay:.2
+         usingSpringWithDamping:.5
+          initialSpringVelocity:1/.5
+                        options:UIViewAnimationOptionOverrideInheritedCurve
+                     animations:^{
+                         coverView.alpha = 1;
+                         
+                         CGRect frame = mainView.frame;
+                         frame.origin.x -= ((SCREEN_WIDTH - frame.size.width)/2 + frame.size.width);
+                         mainView.frame = frame;
+                         
+                     } completion:^(BOOL finished) {
+                     }];
+    
 }
 
 

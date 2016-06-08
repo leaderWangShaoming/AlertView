@@ -12,6 +12,7 @@
 #import "AlertButtonsView.h"
 #import "AlertViewAnimation.h"
 
+
 @interface AlertViewShow : NSObject
 
 //subviews
@@ -88,6 +89,7 @@
                   buttonType:(NSArray *)typeArray
                 buttonsArray:(NSArray *)buttons
                     tapBlock:(TapIndex)block;
+
 
 /**
  * 提示框信息
