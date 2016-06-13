@@ -68,7 +68,7 @@ typedef NS_ENUM(NSInteger,AlertHeadGraphicType) {
 //布局
 - (void)updateHeadLayout;
 
-
++ (instancetype)shareHint;
 + (void)showHint:(NSString *)str;
 + (void)showHint:(NSString *)str offSetY:(CGFloat)offsetY;
 @end

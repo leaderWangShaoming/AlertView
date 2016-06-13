@@ -210,7 +210,11 @@
             break;
         case 8:
         {
-            [AlertViewShow showHint:@"提示"];
+//            [AlertViewShow showHint:@"提示"];
+            [AlertHeadView shareHint].backgroundColor = [UIColor whiteColor];
+            [AlertHeadView shareHint].titleColor = [UIColor darkTextColor];
+            [AlertHeadView showHint:[NSString stringWithFormat:@"提示"]];
+
         }
             break;
         default:
