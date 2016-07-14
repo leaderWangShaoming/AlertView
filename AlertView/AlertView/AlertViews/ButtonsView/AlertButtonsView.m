@@ -151,13 +151,13 @@ static const CGFloat height = 40;//button高
     NSInteger howMany = [_buttonsLayout[index] integerValue];
     
     //根据当前显示几个cell设置间距
-    CGFloat itemWidth = (self.superview.frame.size.width - (howMany - 1)*space)/howMany;
+    CGFloat itemWidth = (self.superview.frame.size.width - (howMany + 1))/howMany;
     
     return CGSizeMake(itemWidth,_buttonHeight);
 }
 
 - (UIEdgeInsets)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout insetForSectionAtIndex:(NSInteger)section {
-    return UIEdgeInsetsMake(0, 0, 0, 0);
+    return UIEdgeInsetsMake(0, 1, 0, 1);
 }
 
 - (CGFloat)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout minimumInteritemSpacingForSectionAtIndex:(NSInteger)section {
@@ -165,7 +165,7 @@ static const CGFloat height = 40;//button高
 }
 
 - (CGFloat)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout minimumLineSpacingForSectionAtIndex:(NSInteger)section {
-    return 1;
+    return space;
 }
 
 - (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout referenceSizeForHeaderInSection:(NSInteger)section {

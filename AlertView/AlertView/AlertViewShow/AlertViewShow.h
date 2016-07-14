@@ -72,6 +72,13 @@
                    buttonsArray:(NSArray *)buttons
                        tapBlock:(TapIndex)block;
 /**
+ * 文字标题，按钮样式
+ */
+- (instancetype)initWithTitle:(NSString *)title
+                     buttonType:(NSArray *)typeArray
+                   buttonsArray:(NSArray *)buttons
+                       tapBlock:(TapIndex)block;
+/**
  * 标题，内容，按钮样式
  */
 - (instancetype)initHeadTitle:(NSString *)title

@@ -107,6 +107,16 @@ typedef NS_ENUM(NSInteger,AlertShowType) {
     return self;
 }
 
+- (instancetype)initWithTitle:(NSString *)title
+                   buttonType:(NSArray *)typeArray
+                 buttonsArray:(NSArray *)buttons
+                     tapBlock:(TapIndex)block {
+    self = [[AlertViewShow alloc] initWithType:AlertHeadTypeCustom title:title image:nil];
+    _buttonsView = [[AlertButtonsView alloc] initWithTypeArray:typeArray buttonsArray:buttons tapBlock:block];
+    showType = AlertShowTypeHeadButtons;
+    return self;
+}
+
 - (instancetype)initWithGraphic:(AlertHeadGraphicType)type title:(NSString *)title image:(UIImage *)image buttonType:(NSArray *)typeArray buttonsArray:(NSArray *)buttons tapBlock:(TapIndex)block {
     self = [[AlertViewShow alloc] initWithGraphic:type title:title image:image];
     _buttonsView = [[AlertButtonsView alloc] initWithTypeArray:typeArray buttonsArray:buttons tapBlock:block];

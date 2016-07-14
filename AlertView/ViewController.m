@@ -30,7 +30,7 @@
 }
 
 - (void)initTable {
-    listArray = @[@"文字",@"图片",@"图文",@"文字头，文字内容",@"头，内容总方法",@"头部，按钮",@"文字提示，内容，按钮",@"终极方法",@"showHint"];
+    listArray = @[@"文字",@"图片",@"图文",@"文字头，文字内容",@"头，内容总方法",@"头部，按钮",@"文字头部，按钮",@"文字提示，内容，按钮",@"终极方法",@"showHint"];
     
     mainTable = [[UITableView alloc] initWithFrame:CGRectZero style:UITableViewStylePlain];
     mainTable.delegate = self;
@@ -155,6 +155,35 @@
             break;
         case 6:
         {
+            __block AlertViewShow *alertView = [[AlertViewShow alloc] initWithTitle:@"是否关闭直播" buttonType:@[@(2)] buttonsArray:@[@"点错了",@"关闭"] tapBlock:^(NSInteger index) {
+                [alertView dismiss];
+                switch (index)
+                {
+                    case 0:
+                    {
+                        
+                    }
+                        break;
+                    case 1:
+                    {
+
+                    }
+                        break;
+                    default:
+                        break;
+                }
+            }];
+            
+            alertView.lineColor = [UIColor groupTableViewBackgroundColor];
+            alertView.lineHeight = 1;
+            alertView.tapCoverDismiss = NO;
+            alertView.coverColor = RGBACOLOR(.8, .8, .8, .3);
+            [alertView show:AlertViewAnimationLeft];
+
+        }
+            break;
+        case 7:
+        {
             __block AlertViewShow *alert = [[AlertViewShow alloc] initHeadTitle:@"提示" contentTitle:@"这是我随便打的字我也不知道我打的是什么主要是为了凑字数不知道写点什么但貌似字数差不多了那我就结束吧" buttonType:@[@(2),@(3),@(2)] buttonsArray:@[@"1",@"2",@"3",@"4"] tapBlock:^(NSInteger index) {
                 NSLog(@"点击了第%ld个",index + 1);
             }];
@@ -165,7 +194,7 @@
             [alert show:AlertViewAnimationLeft];
         }
             break;
-        case 7:
+        case 8:
         {
             __block AlertViewShow *alert = [[AlertViewShow alloc] initHeadType:AlertHeadGraphicCenterLeft
                                                              headTitle:@"提示"
@@ -208,7 +237,7 @@
             NSLog(@"%@",alert);
         }
             break;
-        case 8:
+        case 9:
         {
 //            [AlertViewShow showHint:@"提示"];
             [AlertHeadView shareHint].backgroundColor = [UIColor whiteColor];
